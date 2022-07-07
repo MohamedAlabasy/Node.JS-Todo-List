@@ -37,7 +37,7 @@ npm i -D ts-node
 
 # install supertest
 npm i -D supertest 
-npm i --D @types/supertest
+npm i -D @types/supertest
 
 
 # install dotenv
