@@ -1,4 +1,6 @@
 import express from 'express';
+import body_parser from 'body-parser';
+
 
 import morganMiddleware from './middleware/morganMiddleware';
 import headerAccessMiddleware from './middleware/headerAccessMiddleware';
@@ -14,7 +16,11 @@ app.listen(8888, () => {
 app.get('/',(request: express.Request, response: express.Response, next: express.NextFunction) => {
     response.send('hello')
 })
-
+// #=======================================================================================#
+// #			                            body_parse                                     #
+// #=======================================================================================#
+app.use(body_parser.json());
+app.use(body_parser.urlencoded({ extended: false }));
 // #=======================================================================================#
 // #			                     add header or use cors                                #
 // #=======================================================================================#
