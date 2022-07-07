@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_DB as string)
         console.log('mongoDB connected on port 27017');
         // run server
         app.listen(process.env.PORT || 8888, () => {
-            console.log(`App Run to access admin dashboard http://${process.env.HOST}:${process.env.PORT || 8888}/admin`);
+            console.log(`App Run to http://${process.env.HOST}:${process.env.PORT || 8888}`);
         });
     }).catch((error) => {
         console.log('DB not connected : ' + error);
