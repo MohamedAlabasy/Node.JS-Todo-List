@@ -17,6 +17,7 @@ export const createTodoList = (request: Request, response: Response, next: NextF
         status: request.body.status,
         start_date: request.body.start_date,
         end_date: request.body.end_date,
+        user: request.body.user,
     })
     todoList.save()
         .then((data: any) => {
@@ -43,34 +44,13 @@ export const createTodoList = (request: Request, response: Response, next: NextF
 // #=======================================================================================#
 export const getTodoListByID = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-    TodoList.findById(request.body._id).populate({ path: 'users', select: unreturnedData }).select(unreturnedData)
+    TodoList.findById(request.body._id).populate({ path: 'user', select: unreturnedData }).select(unreturnedData)
         .then(data => {
             if (data === null) {
-                throw new Error(`No Chapter with this _id = ${request.body._id}`)
+                throw new Error(`No todo with this _id = ${request.body._id}`)
             } else {
                 response.status(200).json({
                     status: 1,
-                    data: data
-                });
-            }
-        })
-        .catch((error) => {
-            next(error);
-        })
-}
-// #=======================================================================================#
-// #			                         get All todo                                      #
-// #=======================================================================================#
-export const getAllTodoLists = (request: Request, response: Response, next: NextFunction) => {
-    validateRequest(request)
-    TodoList.find({}).populate({ path: 'users', select: unreturnedData }).select(`${unreturnedData}`)
-        .then((data) => {
-            if (data.length === 0) {
-                throw new Error('No todo list to show')
-            } else {
-                response.status(200).json({
-                    status: 1,
-                    count: data.length,
                     data: data
                 });
             }
@@ -84,7 +64,7 @@ export const getAllTodoLists = (request: Request, response: Response, next: Next
 // #=======================================================================================#
 export const updateTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
-    TodoList.findById(request.body._id).populate({ path: 'users', select: unreturnedData }).select(`${unreturnedData} -book`)
+    TodoList.findById(request.body._id).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData} -book`)
         .then(todoListData => {
             if (todoListData === null) {
                 throw new Error('Todo not found');
@@ -120,7 +100,50 @@ export const deleteTodoList = (request: Request, response: Response, next: NextF
             } else {
                 response.status(200).json({
                     status: 1,
-                    message: 'Todo deleted successfully',
+                    message: 'deleted successfully',
+                });
+            }
+        })
+        .catch((error) => {
+            next(error);
+        })
+}
+// #=======================================================================================#
+// #			                  get All data depend on status                            #
+// #=======================================================================================#
+export const getAllTodoLists = (request: Request, response: Response, next: NextFunction) => {
+    getAll(request, response, next, '')
+}
+
+export const getAllTodoInProgress = (request: Request, response: Response, next: NextFunction) => {
+    getAll(request, response, next, 'in_progress')
+}
+
+export const getAllTodoUnderReview = (request: Request, response: Response, next: NextFunction) => {
+    getAll(request, response, next, 'under_review')
+}
+
+export const getAllTodoRework = (request: Request, response: Response, next: NextFunction) => {
+    getAll(request, response, next, 'rework')
+}
+
+export const getAllTodoCompleted = (request: Request, response: Response, next: NextFunction) => {
+    getAll(request, response, next, 'completed')
+}
+
+
+
+function getAll(request: Request, response: Response, next: NextFunction, status: string) {
+    validateRequest(request)
+    TodoList.find(status ? { status } : {}).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData}`)
+        .then((data) => {
+            if (data.length === 0) {
+                throw new Error(`No ${status} todo list to show`)
+            } else {
+                response.status(200).json({
+                    status: 1,
+                    count: data.length,
+                    data: data
                 });
             }
         })
