@@ -95,7 +95,8 @@ export const updateChapter = (request: Request, response: Response, next: NextFu
             todoListData.status = request.body.status
             todoListData.start_date = request.body.start_date
             todoListData.end_date = request.body.end_date
-            return chapterData.save()
+            
+            return todoListData.save()
         }).then(saveData => {
             response.status(200).json({
                 status: 1,
