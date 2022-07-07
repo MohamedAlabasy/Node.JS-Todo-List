@@ -22,12 +22,12 @@ npm i -D eslint-config-prettier eslint-plugin-prettier
 # install jasmine
 npm i -D jasmine 
 npm i -D jasmine-spec-reporter
-npm i --D @types/jasmine
+npm i -D @types/jasmine
 
 
 # install express
 npm i express --save
-npm i --D @types/express
+npm i -D @types/express
 
 
 # install node monitor
@@ -45,7 +45,7 @@ npm i dotenv
 
 # install morgan
 npm i -D morgan 
-npm i --D @types/morgan
+npm i -D @types/morgan
 
 
 # install express-validator
@@ -54,7 +54,7 @@ npm i express-validator
 
 # install body-parser
 npm i body-parser --save
-npm i --D @types/body-parser
+npm i -D @types/body-parser
 
 
 # install mongoose  
@@ -63,25 +63,17 @@ npm i mongoose --save
 
 # install bcryptjs
 npm i bcryptjs --save
-npm i --D @types/bcryptjs
+npm i -D @types/bcryptjs
 
 
 # install jsonwebtoken 
 npm i jsonwebtoken  --save
-npm i --D @types/jsonwebtoken 
+npm i -D @types/jsonwebtoken 
 
 
 # install auto-increment
 npm i @typegoose/auto-increment --save
 
-
-# install admin-bro
-npm i admin-bro admin-bro-expressjs --save
-npm i admin-bro-mongoose --save
-
-
-# install ejs
-npm i ejs --save
 
 
  
