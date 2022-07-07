@@ -7,8 +7,8 @@ const schema = new mongoose.Schema({
     description: { type: String, required: true, trim: true },
     priority: { type: String, enum: ['high', 'medium', 'low'] },
     status: { type: String, enum: ['in_progress', 'under_review', 'rework', 'completed'], default: 'in_progress' },
-    start_date: { type: String, required: false, default: null, select: false },
-    end_date: { type: String, required: false, default: null, select: false },
+    start_date: { type: String, required: true },
+    end_date: { type: String, required: true },
     user: { type: Number, ref: 'users' }
 }, { timestamps: true });
 
