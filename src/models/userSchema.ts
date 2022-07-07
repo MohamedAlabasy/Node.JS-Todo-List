@@ -6,8 +6,8 @@ const schema = new mongoose.Schema({
     name: { type: String, require: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, select: false, trim: true },
-    is_verification: { type: Boolean, required: true, lowercase: true },
-    token: { type: String, required: false, default: null, select: false },
+    is_verification: { type: Boolean, required: true, lowercase: true, default: false },
+    token: { type: String, required: false, select: false },
 }, { timestamps: true });
 
 schema.plugin(AutoIncrementID, [{ filed: '_id' }]);
