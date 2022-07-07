@@ -8,15 +8,14 @@ import headerAccessMiddleware from './middleware/headerAccessMiddleware';
 import notFoundMiddleware from './middleware/notFoundMiddleware';
 import errorMiddleware from './middleware/errorMiddleware';
 
+
+import routes from './routes/routes';
+
 const app = express();
 
 app.listen(8888, () => {
     console.log(`App Run at http://localhost:8888`);
 });
-
-app.get('/',(request: express.Request, response: express.Response, next: express.NextFunction) => {
-    response.send('hello')
-})
 // #=======================================================================================#
 // #			                            body_parse                                     #
 // #=======================================================================================#
@@ -26,6 +25,10 @@ app.use(body_parser.urlencoded({ extended: false }));
 // #			                     add header or use cors                                #
 // #=======================================================================================#
 app.use(headerAccessMiddleware);
+// #=======================================================================================#
+// #			                            router                                         #
+// #=======================================================================================#
+app.use('', morganMiddleware, routes);
 // #=======================================================================================#
 // #			                        not Found middleware                               #
 // #=======================================================================================#
