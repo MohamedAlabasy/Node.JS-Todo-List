@@ -8,7 +8,7 @@ const unreturnedData = "-createdAt -updatedAt -__v";
 // #=======================================================================================#
 // #			                                Create                                     #
 // #=======================================================================================#
-export const createChapter = (request: Request, response: Response, next: NextFunction) => {
+export const createTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
     let todoList = new TodoList({
         title: request.body.title,
@@ -41,7 +41,7 @@ export const createChapter = (request: Request, response: Response, next: NextFu
 // #=======================================================================================#
 // #			                        get todo by ID                                     #
 // #=======================================================================================#
-export const getChapterByID = (request: Request, response: Response, next: NextFunction) => {
+export const getTodoListByID = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
     TodoList.findById(request.body._id).populate({ path: 'users', select: unreturnedData }).select(unreturnedData)
         .then(data => {
@@ -61,7 +61,7 @@ export const getChapterByID = (request: Request, response: Response, next: NextF
 // #=======================================================================================#
 // #			                         get All todo                                      #
 // #=======================================================================================#
-export const getAllChapters = (request: Request, response: Response, next: NextFunction) => {
+export const getAllTodoLists = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
     TodoList.find({}).populate({ path: 'users', select: unreturnedData }).select(`${unreturnedData}`)
         .then((data) => {
@@ -82,7 +82,7 @@ export const getAllChapters = (request: Request, response: Response, next: NextF
 // #=======================================================================================#
 // #			                            update                                         #
 // #=======================================================================================#
-export const updateChapter = (request: Request, response: Response, next: NextFunction) => {
+export const updateTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
     TodoList.findById(request.body._id).populate({ path: 'users', select: unreturnedData }).select(`${unreturnedData} -book`)
         .then(todoListData => {
@@ -111,7 +111,7 @@ export const updateChapter = (request: Request, response: Response, next: NextFu
 // #=======================================================================================#
 // #			                            delete                                         #
 // #=======================================================================================#
-export const deleteChapter = (request: Request, response: Response, next: NextFunction) => {
+export const deleteTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
     TodoList.findByIdAndDelete(request.body._id)
         .then((data) => {
