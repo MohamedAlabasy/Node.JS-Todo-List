@@ -75,5 +75,8 @@ npm i -D @types/jsonwebtoken
 npm i @typegoose/auto-increment --save
 
 
+# install nodemailer
+npm i nodemailer   
+npm i -D  @types/nodemailer
 
  
