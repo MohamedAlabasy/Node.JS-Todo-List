@@ -1,4 +1,4 @@
-import { request, Router } from 'express';
+import { Router } from 'express';
 import { body, check } from 'express-validator';
 
 import {
