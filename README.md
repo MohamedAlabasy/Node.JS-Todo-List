@@ -50,11 +50,11 @@ node run start
 ### After completing the registration as a new user, you must go to your email to confirm the email through the code sent to you
 
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/93389016/178167490-8d186b1c-704c-462e-965d-0707be7ec8fc.png" alt="Build Status">
+   <img src="https://user-images.githubusercontent.com/93389016/178178593-c58455de-ad7f-42fe-9cef-d97c96e1d095.png" alt="Build Status">
 </p>
 
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/93389016/178167779-e0f06d69-9dea-4745-8bcf-0eb71a5db41f.png" alt="Build Status">
+   <img src="https://user-images.githubusercontent.com/93389016/178178804-375d086a-eca2-4d43-9485-06e26b9281fe.png" alt="Build Status">
 </p>
 <hr>
 To run eslint to check error
