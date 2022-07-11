@@ -30,17 +30,35 @@ export const login = (request: Request, response: Response, next: NextFunction) 
                         expiresIn: 86400 //for 24 hour
                     });
                     // add token to db
-                    User.findOneAndUpdate({ token: accessToken }).select('+token')
-                        .then((data) => {
-                            response.status(200).json({
-                                status: 1,
-                                // token: data.token,
-                                data: {
-                                    id: data?._id,
-                                    name: data?.name,
-                                    email: data?.email,
-                                }
-                            });
+                    User.findByIdAndUpdate(userData._id, { token: `Bearer ${accessToken}` })
+                        .then(_ => {
+                            User.findById(userData._id).select('+token')
+                                .then((data) => {
+                                    response.status(200).json({
+                                        status: 1,
+                                        token: data?.token,
+                                        data: {
+                                            id: data?._id,
+                                            name: data?.name,
+                                            email: data?.email,
+                                        }
+                                    })
+                                })
+                            // User.findById(userData._id)
+                            //     .then(_ => {
+                            //         let user = new User({ token: accessToken })
+                            //         user.save()
+                            //             .then((data) => {
+                            //                 response.status(200).json({
+                            //                     status: 1,
+                            //                     token: data?.token,
+                            //                     data: {
+                            //                         id: data?._id,
+                            //                         name: data?.name,
+                            //                         email: data?.email,
+                            //                     }
+                            //                 });
+                            //             })
                         }).catch(error => {
                             next(error);
                         })
@@ -57,11 +75,10 @@ export const login = (request: Request, response: Response, next: NextFunction) 
 export const register = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
     const registerCode = code()
-    let hash = bcrypt.hashSync(request.body.password, 10);
     let user = new User({
         name: request.body.name,
         email: request.body.email,
-        password: hash,
+        password: hashPassword(request.body.password),
         is_verification: false,
     })
     user.save()
@@ -99,8 +116,10 @@ export const register = (request: Request, response: Response, next: NextFunctio
 export const activateUserEmail = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
 
-    Reset.findOne({ user: request.body.user })
+    Email.findOne({ user: request.body.user })
         .then(resetData => {
+            console.log(resetData);
+
             if (resetData === null) {
                 throw new Error('code not found');
 
@@ -126,9 +145,9 @@ export const activateUserEmail = (request: Request, response: Response, next: Ne
         })
 }
 // #=======================================================================================#
-// #			                      reset User Password                                  #
+// #                         check User email to rest password                             #
 // #=======================================================================================#
-export const resetPassword = (request: Request, response: Response, next: NextFunction) => {
+export const checkUserEmailToRestPassword = (request: Request, response: Response, next: NextFunction) => {
     const resetCode = code();
     validateRequest(request);
     Email.findOne({ email: request.body.email })
@@ -149,6 +168,38 @@ export const resetPassword = (request: Request, response: Response, next: NextFu
                         status: 1,
                         data: `The code has been sent to your email 👉 ${request.body.email}`
                     })
+                })
+        })
+        .catch(error => {
+            next(error)
+        })
+}
+// #=======================================================================================#
+// #                                  reset User password                                  #
+// #=======================================================================================#
+export const resetPassword = (request: Request, response: Response, next: NextFunction) => {
+    validateRequest(request);
+
+    Reset.findOne({ user: request.body.user })
+        .then(resetData => {
+            if (resetData === null) {
+                throw new Error('code not found');
+
+            } else if (new Date() >= resetData.expire_at) {
+                throw new Error('This code has expired');
+            }
+
+            User.findByIdAndUpdate(resetData.user, { password: hashPassword(request.body.password) },
+                function (error, docs) {
+                    if (error) {
+                        next(error)
+                    }
+                    else {
+                        response.status(200).json({
+                            status: 1,
+                            data: 'password updated successful',
+                        })
+                    }
                 })
         })
         .catch(error => {
@@ -223,8 +274,10 @@ export const deleteUser = (request: Request, response: Response, next: NextFunct
 }
 
 // #=======================================================================================#
-// #			                          generate code                                    #
+// #			                          general fun                                      #
 // #=======================================================================================#
-function code(): number {
-    return Math.floor(1000 + Math.random() * 900000);
+function code(): number { return Math.floor(100000 + Math.random() * 900000); }
+function hashPassword(password: string): string {
+    return bcrypt.hashSync(password, 10);
+
 }

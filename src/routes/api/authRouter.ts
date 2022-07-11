@@ -6,6 +6,7 @@ import {
     deleteUser,
     logout,
     activateUserEmail,
+    checkUserEmailToRestPassword,
     resetPassword
 } from '../../controllers/authController';
 import { body, check } from 'express-validator';
@@ -22,10 +23,11 @@ auth.route('')
     .delete(checkTokens, checkID(), deleteUser)
 
 auth.post('/login', checkExistEmail(), login);
-auth.post('/register', checkExistEmail(), checkUserData(), register);
+auth.post('/register', checkExistEmail(), checkUserName(), checkUserPassword(), register);
 auth.post('/logout', checkTokens, checkID(), logout);
-auth.post('/activate', checkTokens, activateEmailData(), activateUserEmail);
-auth.post('/resetPassword', checkTokens, checkExistEmail(), resetPassword);
+auth.post('/activate', checkTokens, checkCode(), checkActivateUserEmail(), activateUserEmail);
+auth.post('/checkEmail', checkTokens, checkExistEmail(), checkUserEmailToRestPassword);
+auth.post('/resetPassword', checkTokens, checkCode(), checkUserPassword(), checkResetPasswordUserEmail(), resetPassword);
 
 // #=======================================================================================#
 // #			                         check function                                    #
@@ -33,62 +35,70 @@ auth.post('/resetPassword', checkTokens, checkExistEmail(), resetPassword);
 
 function checkID() {
     return [
-        body("_id").isInt().withMessage('invalid Comment ID')
+        body("_id").exists().withMessage('you must enter _id').isInt().withMessage('invalid Comment _id')
     ]
 }
 
 function checkExistEmail() {
     return [
         check('email')
+            .exists().withMessage('you must enter email')
             .isEmail().withMessage('invalid email')
             .custom((email) => {
                 return User.findOne({ email })
                     .then((data) => {
                         if (data && data.email != email)
-                            return Promise.reject('Email already exit')
+                            return Promise.reject('email already exit')
                     })
             }),
     ]
 }
-function checkUserData() {
+function checkUserName() {
     return [
-        body('name').isString().withMessage('invalid name'),
-        body('password').isStrongPassword().withMessage('Password Must contain at least 1 characters(upper and lower),numbers,special characters'),
+        body('name').exists().withMessage('you must enter name').isString().withMessage('invalid name'),
     ]
 }
 
+function checkUserPassword() {
+    return [
+        body('password').exists().withMessage('you must enter password').isStrongPassword().withMessage('Password Must contain at least 1 characters(upper and lower),numbers,special characters'),
+    ]
+}
 
-function activateEmailData() {
+function checkCode() {
     return [
         check('code').exists().withMessage('you must enter code')
             .isInt().withMessage('code must be integer')
-            .isLength({ min: 6, max: 6 }).withMessage('code must consist of 6 numbers'),
+            .isLength({ min: 6, max: 6 }).withMessage('code must consist of 6 numbers'),]
+}
+
+
+function checkActivateUserEmail() {
+    return [
         check('user')
-            .exists().withMessage('you must enter exists')
-            .isInt().withMessage('invalid user ID')
+            .exists().withMessage('you must enter user _id')
+            .isInt().withMessage('invalid user _id')
             .custom((user) => {
                 return Email.find({ user })
                     .then(userData => {
                         if (!userData) {
-                            return Promise.reject('no user with this id');
+                            return Promise.reject('no user with this _id');
                         }
                     });
             })
     ]
 }
-function resetPasswordData() {
+
+function checkResetPasswordUserEmail() {
     return [
-        check('code').exists().withMessage('you must enter code')
-            .isInt().withMessage('code must be integer')
-            .isLength({ min: 6, max: 6 }).withMessage('code must consist of 6 numbers'),
         check('user')
-            .exists().withMessage('you must enter exists')
-            .isInt().withMessage('invalid user ID')
+            .exists().withMessage('you must enter user _id')
+            .isInt().withMessage('invalid user _id')
             .custom((user) => {
                 return Reset.find({ user })
                     .then(userData => {
                         if (!userData) {
-                            return Promise.reject('no user with this id');
+                            return Promise.reject('no user with this _id');
                         }
                     });
             })
