@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 
 import validateRequest from '../utilities/validateRequest';
+import emailVerification from '../utilities/emailVerification';
 import User from '../models/userSchema';
 
 const unreturnedData = "-createdAt -updatedAt -__v";
@@ -63,58 +63,17 @@ export const register = (request: Request, response: Response, next: NextFunctio
     })
     user.save()
         .then((data: any) => {
-            const output = `
-                <p>You have a new contact request</p>
-                <h3>Contact Details</h3>
-                    <ul>  
-                        <li>TODO Code</li>
-                    </ul>
-                <h3>Message</h3>
-                <p>message</p>
-                `;
-
-            // create reusable transporter object using the default SMTP transport
-            let transporter = nodemailer.createTransport({
-                service: 'gmail',
-                host: 'smtp.gmail.com',
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: 'mo7amed.el3basy@gmail.com', // generated ethereal user
-                    pass: 'nfhmmdwzkcilrqkg'  // generated ethereal password
+            const code: number = 5784;
+            emailVerification(request, code);
+            response.status(200).json({
+                status: 1,
+                data: {
+                    _id: data._id,
+                    name: data.name,
+                    email: data.email,
+                    msg: `The code has been sent to your email 👉 ${data.email}`
                 },
-                tls: {
-                    rejectUnauthorized: false
-                }
-            });
-
-            // setup email data with unicode symbols
-            let mailOptions = {
-                from: '"TODO List" <mo7amed.el3basy@gmail.com>', // sender address
-                to: 'eng.mohamed.alabasy@gmail.com', // list of receivers
-                subject: 'TODO Verification Request', // Subject line
-                text: 'TODO List', // plain text body
-                html: output // html body
-            };
-
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return console.log(error);
-                }
-                console.log('Message sent: %s', info.messageId);
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-                // res.render('contact', { msg: 'Email has been sent' });
-                response.status(200).json({
-                    status: 1,
-                    data: {
-                        _id: data._id,
-                        name: data.name,
-                        email: data.email
-                    },
-                })
-            });
+            })
         })
         .catch((error: Error) => {
             next(error)
@@ -141,6 +100,24 @@ export const getUserData = (request: Request, response: Response, next: NextFunc
         })
 }
 
+
+// #=======================================================================================#
+// #			                            logout                                         #
+// #=======================================================================================#
+export const logout = (request: Request, response: Response, next: NextFunction) => {
+    validateRequest(request);
+    User.findOneAndUpdate({ token: null })
+        .then(_ => {
+            response.status(200).json({
+                status: 1,
+                data: 'logout successful',
+            })
+        }).catch(error => {
+            next(error);
+        })
+}
+
+
 // #=======================================================================================#
 // #			                          delete User                                      #
 // #=======================================================================================#
@@ -159,22 +136,6 @@ export const deleteUser = (request: Request, response: Response, next: NextFunct
             }
         })
         .catch((error) => {
-            next(error);
-        })
-}
-
-// #=======================================================================================#
-// #			                            logout                                         #
-// #=======================================================================================#
-export const logout = (request: Request, response: Response, next: NextFunction) => {
-    validateRequest(request);
-    User.findOneAndUpdate({ token: null })
-        .then(_ => {
-            response.status(200).json({
-                status: 1,
-                data: 'logout successful',
-            })
-        }).catch(error => {
             next(error);
         })
 }

@@ -33,7 +33,7 @@ function checkEmail() {
 
 function checkUserData() {
     return [
-        body('name').isAlpha().withMessage('invalid name'),
+        body('name').isString().withMessage('invalid name'),
         check('email')
             .isEmail().withMessage('invalid email')
             .custom((userEmail: String) => {
