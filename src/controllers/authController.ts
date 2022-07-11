@@ -62,32 +62,31 @@ export const register = (request: Request, response: Response, next: NextFunctio
         password: hash,
         is_verification: false,
     })
-    user.save()
-        .then((newUserData: any) => {
-            const code: number = Math.floor(1000 + Math.random() * 900000);
-            let emailVerificationCode = new Email({
-                code: code,
-                created_at: Date.now(),
-                expire_at: Date.now() + 3600000,
-                user: newUserData._id,
-            })
-            emailVerificationCode.save()
-                .then(_ => {
-                    emailVerification(request, code);
-                    response.status(200).json({
-                        status: 1,
-                        data: {
-                            _id: newUserData._id,
-                            name: newUserData.name,
-                            email: newUserData.email,
-                            msg: `The code has been sent to your email 👉 ${newUserData.email}`
-                        },
-                    })
-                })
-                .catch((error: any) => {
-                    next(error);
-                })
+    user.save().then((newUserData: any) => {
+        const code: number = Math.floor(1000 + Math.random() * 900000);
+        let emailVerificationCode = new Email({
+            code: code,
+            created_at: Date.now(),
+            expire_at: Date.now() + 3600000,
+            user: newUserData._id,
         })
+        emailVerificationCode.save()
+            .then(_ => {
+                emailVerification(request, code);
+                response.status(200).json({
+                    status: 1,
+                    data: {
+                        _id: newUserData._id,
+                        name: newUserData.name,
+                        email: newUserData.email,
+                        msg: `The code has been sent to your email 👉 ${newUserData.email}`
+                    },
+                })
+            })
+            .catch((error: any) => {
+                next(error);
+            })
+    })
         .catch((error: Error) => {
             next(error)
         })
@@ -130,7 +129,6 @@ export const activateUserEmail = (request: Request, response: Response, next: Ne
 // #=======================================================================================#
 export const getUserData = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
-
     User.findById(request.body._id).select(unreturnedData)
         .then((data) => {
             if (data === null) {
@@ -153,14 +151,11 @@ export const getUserData = (request: Request, response: Response, next: NextFunc
 // #=======================================================================================#
 export const logout = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-    User.findById(request.body._id)
+    User.findByIdAndUpdate(request.body._id, { token: null })
         .then(userData => {
             if (userData === null) {
-                throw new Error(`No user with this _id = ${request.body.id}`)
+                throw new Error(`No user with this _id = ${request.body._id}`)
             }
-            userData.token = ''
-            return userData.save()
-        }).then(_ => {
             response.status(200).json({
                 status: 1,
                 data: 'logout successful',
@@ -180,7 +175,7 @@ export const deleteUser = (request: Request, response: Response, next: NextFunct
     User.findByIdAndDelete(request.body._id)
         .then((data) => {
             if (data === null) {
-                throw new Error(`No user with this _id = ${request.body.id}`)
+                throw new Error(`No user with this _id = ${request.body._id}`)
             } else {
                 data.deleteOne()
                 response.status(200).json({
