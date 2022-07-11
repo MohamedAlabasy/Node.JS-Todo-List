@@ -44,11 +44,11 @@
 				{
 					"name": "Register",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"name\":\"name\",\r\n\"email\":\"a@a.com\",\r\n\"password\":\"123456789+Aa\"\r\n}",
+							"raw": "{\r\n\"_id\":22\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -56,7 +56,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8080/user/register",
+							"raw": "http://127.0.0.1:8080/user",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -66,8 +66,7 @@
 							],
 							"port": "8080",
 							"path": [
-								"user",
-								"register"
+								"user"
 							]
 						}
 					},
@@ -95,7 +94,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"_id\":0\r\n}",
+							"raw": "{\r\n  \"_id\":22\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -351,7 +350,7 @@
 					"response": []
 				},
 				{
-					"name": "get Course by ID",
+					"name": "get todo by ID",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -370,7 +369,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"_id\":6\r\n}",
+							"raw": "{\r\n   \"_id\":3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -448,11 +447,11 @@
 								}
 							]
 						},
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n\"_id\":3,\r\n\"title\":\"tiatle\",\r\n\"description\":\"descriptiaonz description\",\r\n\"priority\":\"low\",\r\n\"status\":\"rework\",\r\n\"start_date\":\"2022-05-17\",\r\n\"end_date\":\"2022-05-17\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -493,7 +492,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"title\":\"completed\",\r\n\"description\":\"description description\",\r\n\"priority\":\"medium\",\r\n\"status\":\"completed\",\r\n\"start_date\":\"2022-05-17\",\r\n\"end_date\":\"2022-05-17\",\r\n\"user\":0\r\n}",
+							"raw": "{\r\n\"title\":\"title\",\r\n\"description\":\"description description\",\r\n\"priority\":\"medium\",\r\n\"status\":\"completed\",\r\n\"start_date\":\"2022-05-17\",\r\n\"end_date\":\"2022-05-17\",\r\n\"user\":0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,6 +511,53 @@
 							"port": "8080",
 							"path": [
 								"todo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "activate email",
+			"item": [
+				{
+					"name": "activate user email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhQGFhLmNvbSIsInR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNjU2MTk1MjE2LCJleHAiOjE2NTYyODE2MTZ9.6oTIARzdc7TggMpY2EKjGprmVXvy2ikpcW1jARt0BIs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\":267962,\r\n  \"user\":22\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/user/activate",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"activate"
 							]
 						}
 					},
