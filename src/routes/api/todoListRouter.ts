@@ -20,9 +20,9 @@ import checkTokens from '../../utilities/checkTokens';
 const todoList: Router = Router()
 
 todoList.route('')
-    .post(checkExistTitle(), checkTodoData(), checkUserID(), createTodoList)
+    .post(checkTokens, checkExistTitle(), checkTodoData(), checkUserID(), createTodoList)
     .get(checkTokens, checkTodoID(), getTodoListByID)
-    .put(checkTodoID(), checkUpdateTitle(), checkTodoData(), updateTodoList)
+    .put(checkTokens, checkTodoID(), checkUpdateTitle(), checkTodoData(), updateTodoList)
     .delete(checkTokens, checkTodoID(), deleteTodoList)
 
 todoList.get('/all', checkTokens, getAllTodoLists);

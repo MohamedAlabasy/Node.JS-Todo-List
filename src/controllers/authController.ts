@@ -13,6 +13,7 @@ const unreturnedData = "-createdAt -updatedAt -__v";
 // #=======================================================================================#
 export const login = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
+
     User.findOne({ email: request.body.email }).select(`+password ${unreturnedData}`)
         .then((userData) => {
             if (userData === null) {
@@ -23,7 +24,7 @@ export const login = (request: Request, response: Response, next: NextFunction) 
                     throw new Error(`invalid password`)
                 } else {
                     // to add token to router
-                    const accessToken = jwt.sign({ id: userData._id, email: userData.email }, process.env.ACCESS_TOKEN_SECRET as string, {
+                    const accessToken = jwt.sign({ id: userData._id, email: userData.email, isVerification: userData.is_verification, }, process.env.ACCESS_TOKEN_SECRET as string, {
                         expiresIn: 86400 //for 24 hour
                     });
                     // add token to db
@@ -38,7 +39,6 @@ export const login = (request: Request, response: Response, next: NextFunction) 
                                     email: data?.email,
                                 }
                             });
-
                         }).catch(error => {
                             next(error);
                         })
@@ -84,6 +84,7 @@ export const register = (request: Request, response: Response, next: NextFunctio
 // #=======================================================================================#
 export const getUserData = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
+
     User.findById(request.body._id).select(unreturnedData)
         .then((data) => {
             if (data === null) {
@@ -106,6 +107,7 @@ export const getUserData = (request: Request, response: Response, next: NextFunc
 // #=======================================================================================#
 export const logout = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
+
     User.findOneAndUpdate({ token: null })
         .then(_ => {
             response.status(200).json({

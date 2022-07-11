@@ -10,6 +10,7 @@ const unreturnedData = "-createdAt -updatedAt -__v";
 // #=======================================================================================#
 export const createTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
+
     let todoList = new TodoList({
         title: request.body.title,
         description: request.body.description,
@@ -44,6 +45,7 @@ export const createTodoList = (request: Request, response: Response, next: NextF
 // #=======================================================================================#
 export const getTodoListByID = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
+
     TodoList.findById(request.body._id).populate({ path: 'user', select: unreturnedData }).select(unreturnedData)
         .then(data => {
             if (data === null) {
@@ -64,6 +66,7 @@ export const getTodoListByID = (request: Request, response: Response, next: Next
 // #=======================================================================================#
 export const updateTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
+
     TodoList.findById(request.body._id).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData} -book`)
         .then(todoListData => {
             if (todoListData === null) {
@@ -93,6 +96,7 @@ export const updateTodoList = (request: Request, response: Response, next: NextF
 // #=======================================================================================#
 export const deleteTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
+
     TodoList.findByIdAndDelete(request.body._id)
         .then((data) => {
             if (data == null) {
@@ -135,6 +139,7 @@ export const getAllTodoCompleted = (request: Request, response: Response, next: 
 
 function getAll(request: Request, response: Response, next: NextFunction, status: string) {
     validateRequest(request)
+
     TodoList.find(status ? { status } : {}).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData}`)
         .then((data) => {
             if (data.length === 0) {
