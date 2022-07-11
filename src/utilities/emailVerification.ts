@@ -3,7 +3,7 @@ import { Request } from 'express';
 
 import EmailMessagesDesign from './emailMessagesDesign'
 
-export default function emailVerification(request: Request, code: number) {
+export default function emailVerification(request: Request, code: number, isResetPassword: boolean = false) {
 
 
     // create reusable transporter object using the default SMTP transport
@@ -27,7 +27,7 @@ export default function emailVerification(request: Request, code: number) {
         to: request.body.email, // list of receivers
         subject: 'TODO Verification Request', // Subject line
         text: 'TODO List', // plain text body
-        html: EmailMessagesDesign(request.body.name, code) // html body
+        html: EmailMessagesDesign(request.body.name, code, isResetPassword) // html body
     };
 
     // send mail with defined transport object

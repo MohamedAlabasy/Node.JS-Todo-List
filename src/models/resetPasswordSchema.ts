@@ -11,5 +11,5 @@ const schema = new mongoose.Schema({
 
 schema.plugin(AutoIncrementID, [{ filed: '_id' }]);
 
-export default mongoose.model('forgot_password', schema);
+export default mongoose.model('reset_password', schema);
 

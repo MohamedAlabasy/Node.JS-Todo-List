@@ -1,4 +1,11 @@
-export default function EmailMessagesDesign(userName: string, code: number) {
+export default function EmailMessagesDesign(userName: string, code: number, isResetPassword: boolean = false) {
+    let message: string = '';
+
+    isResetPassword ?
+        message = 'Someone asked to reset your password If you made this request, please copy this code to reset your password'
+        : message = 'We\'re excited to have you get started. First, you need to confirm your account Just Just copy the following code.';
+
+
     return (
         `<!DOCTYPE html>
     <html>
@@ -136,9 +143,7 @@ export default function EmailMessagesDesign(userName: string, code: number) {
                             <td bgcolor="#ffffff" align="left"
                                 style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Hi ${userName}</h2>
-                                <p style="margin: 0;margin-top: 20px;">We're excited to have you get started. First, you
-                                    need to confirm your
-                                    account. Just Just copy the following code.</p>
+                                <p style="margin: 0;margin-top: 20px;">${message}</p>
                             </td>
                         </tr>
                         <tr>

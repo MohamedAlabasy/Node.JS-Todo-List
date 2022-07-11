@@ -6,9 +6,10 @@ import validateRequest from '../utilities/validateRequest';
 import emailVerification from '../utilities/emailVerification';
 import User from '../models/userSchema';
 import Email from '../models/emailVerificationSchema';
+import Reset from '../models/resetPasswordSchema';
 
 const unreturnedData = "-createdAt -updatedAt -__v";
-
+const expireCodeTime = 3600000;
 // #=======================================================================================#
 // #			                            login                                          #
 // #=======================================================================================#
@@ -55,6 +56,7 @@ export const login = (request: Request, response: Response, next: NextFunction) 
 // #=======================================================================================#
 export const register = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
+    const registerCode = code()
     let hash = bcrypt.hashSync(request.body.password, 10);
     let user = new User({
         name: request.body.name,
@@ -62,31 +64,31 @@ export const register = (request: Request, response: Response, next: NextFunctio
         password: hash,
         is_verification: false,
     })
-    user.save().then((newUserData: any) => {
-        const code: number = Math.floor(1000 + Math.random() * 900000);
-        let emailVerificationCode = new Email({
-            code: code,
-            created_at: Date.now(),
-            expire_at: Date.now() + 3600000,
-            user: newUserData._id,
-        })
-        emailVerificationCode.save()
-            .then(_ => {
-                emailVerification(request, code);
-                response.status(200).json({
-                    status: 1,
-                    data: {
-                        _id: newUserData._id,
-                        name: newUserData.name,
-                        email: newUserData.email,
-                        msg: `The code has been sent to your email 👉 ${newUserData.email}`
-                    },
+    user.save()
+        .then((newUserData: any) => {
+            let emailVerificationCode = new Email({
+                code: registerCode,
+                created_at: Date.now(),
+                expire_at: Date.now() + expireCodeTime,
+                user: newUserData._id,
+            })
+            emailVerificationCode.save()
+                .then(_ => {
+                    emailVerification(request, registerCode);
+                    response.status(200).json({
+                        status: 1,
+                        data: {
+                            _id: newUserData._id,
+                            name: newUserData.name,
+                            email: newUserData.email,
+                            msg: `The code has been sent to your email 👉 ${newUserData.email}`
+                        },
+                    })
                 })
-            })
-            .catch((error: any) => {
-                next(error);
-            })
-    })
+                .catch((error: any) => {
+                    next(error);
+                })
+        })
         .catch((error: Error) => {
             next(error)
         })
@@ -96,16 +98,17 @@ export const register = (request: Request, response: Response, next: NextFunctio
 // #=======================================================================================#
 export const activateUserEmail = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-    Email.findOne({ user: request.body.user })
-        .then(emailData => {
-            if (emailData === null) {
+
+    Reset.findOne({ user: request.body.user })
+        .then(resetData => {
+            if (resetData === null) {
                 throw new Error('code not found');
 
-            } else if (new Date() >= emailData.expire_at) {
+            } else if (new Date() >= resetData.expire_at) {
                 throw new Error('This code has expired');
             }
 
-            User.findByIdAndUpdate(emailData.user, { is_verification: true },
+            User.findByIdAndUpdate(resetData.user, { is_verification: true },
                 function (error, docs) {
                     if (error) {
                         next(error)
@@ -116,6 +119,36 @@ export const activateUserEmail = (request: Request, response: Response, next: Ne
                             data: 'activate email successful',
                         })
                     }
+                })
+        })
+        .catch(error => {
+            next(error)
+        })
+}
+// #=======================================================================================#
+// #			                      reset User Password                                  #
+// #=======================================================================================#
+export const resetPassword = (request: Request, response: Response, next: NextFunction) => {
+    const resetCode = code();
+    validateRequest(request);
+    Email.findOne({ email: request.body.email })
+        .then(emailData => {
+            if (emailData === null) {
+                throw new Error('this email doesn\'t exist');
+            }
+            let resetPasswordCode = new Reset({
+                code: resetCode,
+                created_at: Date.now(),
+                expire_at: Date.now() + expireCodeTime,
+                user: emailData._id,
+            })
+            resetPasswordCode.save()
+                .then(_ => {
+                    emailVerification(request, resetCode, true);
+                    response.status(200).json({
+                        status: 1,
+                        data: `The code has been sent to your email 👉 ${request.body.email}`
+                    })
                 })
         })
         .catch(error => {
@@ -187,4 +220,11 @@ export const deleteUser = (request: Request, response: Response, next: NextFunct
         .catch((error) => {
             next(error);
         })
+}
+
+// #=======================================================================================#
+// #			                          generate code                                    #
+// #=======================================================================================#
+function code(): number {
+    return Math.floor(1000 + Math.random() * 900000);
 }
