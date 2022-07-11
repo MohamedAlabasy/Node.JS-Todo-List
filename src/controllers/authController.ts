@@ -44,21 +44,6 @@ export const login = (request: Request, response: Response, next: NextFunction) 
                                         }
                                     })
                                 })
-                            // User.findById(userData._id)
-                            //     .then(_ => {
-                            //         let user = new User({ token: accessToken })
-                            //         user.save()
-                            //             .then((data) => {
-                            //                 response.status(200).json({
-                            //                     status: 1,
-                            //                     token: data?.token,
-                            //                     data: {
-                            //                         id: data?._id,
-                            //                         name: data?.name,
-                            //                         email: data?.email,
-                            //                     }
-                            //                 });
-                            //             })
                         }).catch(error => {
                             next(error);
                         })
@@ -115,18 +100,14 @@ export const register = (request: Request, response: Response, next: NextFunctio
 // #=======================================================================================#
 export const activateUserEmail = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-
     Email.findOne({ user: request.body.user })
         .then(resetData => {
             console.log(resetData);
-
             if (resetData === null) {
                 throw new Error('code not found');
-
             } else if (new Date() >= resetData.expire_at) {
                 throw new Error('This code has expired');
             }
-
             User.findByIdAndUpdate(resetData.user, { is_verification: true },
                 function (error, docs) {
                     if (error) {
@@ -179,7 +160,6 @@ export const checkUserEmailToRestPassword = (request: Request, response: Respons
 // #=======================================================================================#
 export const resetPassword = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-
     Reset.findOne({ user: request.body.user })
         .then(resetData => {
             if (resetData === null) {
@@ -252,7 +232,7 @@ export const logout = (request: Request, response: Response, next: NextFunction)
 
 
 // #=======================================================================================#
-// #			                          delete User                                      #
+// #                            delete User for testing only                               #
 // #=======================================================================================#
 export const deleteUser = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
@@ -276,8 +256,9 @@ export const deleteUser = (request: Request, response: Response, next: NextFunct
 // #=======================================================================================#
 // #			                          general fun                                      #
 // #=======================================================================================#
-function code(): number { return Math.floor(100000 + Math.random() * 900000); }
+function code(): number {
+    return Math.floor(100000 + Math.random() * 900000);
+}
 function hashPassword(password: string): string {
     return bcrypt.hashSync(password, 10);
-
 }
