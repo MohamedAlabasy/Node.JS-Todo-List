@@ -25,6 +25,45 @@ npm i
 
 ```bash
 ├── src
+│   ├── controllers
+│   │   ├── authController.ts => `for handel authentication function`
+│   │   └── todoListController.ts => `for handel TODO list function`
+│   │
+│   │
+│   ├── middleware
+│   │   ├── morganMiddleware.ts => `for log url, method and statue of requests`
+│   │   │── notFoundMiddleware.ts => `for not Found Middleware`
+│   │   │── headerAccess.ts => `for handel Access to node Middleware`
+│   │   └── errorMiddleware.ts => `for error Middleware`
+│   │
+│   │
+│   ├── models
+│   │   ├── emailVerificationSchema.ts => `for handel email verification Schema`
+│   │   │── resetPasswordSchema.ts => `for handel reset password Schema`
+│   │   │── todoListSchema.ts => `for handel todo list Schema`
+│   │   └── userSchema.ts => `for handel user Schema`
+│   │
+│   │
+│   ├── routes
+│   │   ├── api
+│   │   │   │── authRouter.ts => `for handel authentication route`
+│   │   │   │── todoListRouter.ts => `for handel TODO List route`
+│   │   └── routes.ts => `import all routes and exports it to index`
+│   │
+│   │
+│   ├── tests => `for testing purposes`
+│   │   ├── helpers
+│   │   │   └── reporter.ts
+│   │   └── indexSpec.ts => `for testing endpoint api`
+│   │
+│   │
+│   ├── utilities
+│   │   │── checkTokens.ts => `for Request check Tokens`
+│   │   │── emailVerification.ts => `for send email message`
+│   │   │── emailMessagesDesign.ts => `for email messages design ( HTML & CSS )`
+│   │   └── validateRequest.ts => `for validate Request`
+│   │
+│   │
 │   └── index.ts => `to run the server`
 └──
 ```
