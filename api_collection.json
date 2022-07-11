@@ -12,11 +12,21 @@
 				{
 					"name": "login",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhQGFhLmNvbSIsInR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNjU2MTk1MjE2LCJleHAiOjE2NTYyODE2MTZ9.6oTIARzdc7TggMpY2EKjGprmVXvy2ikpcW1jARt0BIs",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"eng.mohamed.alabasy@gmail.com\",\r\n    \"password\":\"123456789Aa+!\"\r\n}",
+							"raw": "{\r\n\"email\":\"eng.mohamed.alabasy@gmail.com\",\r\n\"password\":\"12346789+Aa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,11 +54,11 @@
 				{
 					"name": "Register",
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"_id\":22\r\n}",
+							"raw": "{\r\n\"name\":\"Mohamed Alabasy\",\r\n\"email\":\"eng.mohamed.alabasy@gmail.com\",\r\n\"password\":\"12346789+Aa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -56,7 +66,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8080/user",
+							"raw": "http://127.0.0.1:8080/user/register",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -66,7 +76,8 @@
 							],
 							"port": "8080",
 							"path": [
-								"user"
+								"user",
+								"register"
 							]
 						}
 					},
@@ -492,7 +503,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"title\":\"title\",\r\n\"description\":\"description description\",\r\n\"priority\":\"medium\",\r\n\"status\":\"completed\",\r\n\"start_date\":\"2022-05-17\",\r\n\"end_date\":\"2022-05-17\",\r\n\"user\":0\r\n}",
+							"raw": "{\r\n\"title\":\"finish project\",\r\n\"description\":\"we must finish your project before the holidays\",\r\n\"priority\":\"medium\",\r\n\"status\":\"completed\",\r\n\"start_date\":\"2022-07-05\",\r\n\"end_date\":\"2022-07-11\",\r\n\"user\":0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -538,7 +549,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"code\":267962,\r\n  \"user\":22\r\n}",
+							"raw": "{\r\n  \"code\":210305,\r\n  \"user\":30\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -558,6 +569,144 @@
 							"path": [
 								"user",
 								"activate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reset password",
+			"item": [
+				{
+					"name": "check user email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhQGFhLmNvbSIsInR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNjU2MTk1MjE2LCJleHAiOjE2NTYyODE2MTZ9.6oTIARzdc7TggMpY2EKjGprmVXvy2ikpcW1jARt0BIs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"eng.mohamed.alabasy@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/user/checkEmail",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"checkEmail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhQGFhLmNvbSIsInR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNjU2MTk1MjE2LCJleHAiOjE2NTYyODE2MTZ9.6oTIARzdc7TggMpY2EKjGprmVXvy2ikpcW1jARt0BIs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\":154786,\r\n    \"password\":\"asda\",\r\n    \"user\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/user/resetPassword",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"resetPassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "get user by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhQGFhLmNvbSIsInR5cGUiOiJzdHVkZW50IiwiaWF0IjoxNjU2MTk1MjE2LCJleHAiOjE2NTYyODE2MTZ9.6oTIARzdc7TggMpY2EKjGprmVXvy2ikpcW1jARt0BIs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"_id\":0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"user"
 							]
 						}
 					},
