@@ -2,7 +2,7 @@
 
 ## Description:
 
-Simple Task Management Tool has the following Lists ( TODO – IN progress – Under review – Rework - Completed ) 
+Simple Task Management Tool has the following Lists ( TODO – IN progress – Under review – Rework - Completed )
 which can be Create Read Update Delete and move Task from List to another List.
 
 ## To run this project
@@ -18,6 +18,7 @@ git clone https://github.com/MohamedAlabasy/Node.JS-Todo-List.git
 ```
 npm i
 ```
+
 <h3 align="center">To help you understand the project</h3>
 
 ## Folder Structure
@@ -27,6 +28,7 @@ npm i
 │   └── index.ts => `to run the server`
 └──
 ```
+
 ## DataBase ERD
 
 <p align="center">
@@ -41,9 +43,10 @@ node run start
 
 `Step 4` : Open the browser for admin control page and click : [http://localhost:8080](http://localhost:8080)
 
-`Step 5` : Open [postman](https://www.postman.com/downloads/) and import : [Database collation](https://github.com/MohamedAlabasy/Node.JS-Todo-List/blob/main/api_collection.json) You will find it in the project file.
+`Step 5` : Open [postman](https://www.postman.com/downloads/) and import : [API Collation](https://github.com/MohamedAlabasy/Node.JS-Todo-List/blob/main/api_collection.json) You will find it in the project file.
 
-`Step 6` :  Download front-end React source code : 
+`Step 6` : Download front-end React source code :
+
 <h3 align="center">https://github.com/MohamedAlabasy/React-Todo-List</h3>
 <hr>
 
@@ -80,7 +83,7 @@ To run the JS code
 ```
 node dist/index.js
 ```
+
 <hr>
 
 Here are the [Command](https://github.com/MohamedAlabasy/Node.JS-Todo-List/blob/main/command.txt) that were used in the project, You will find it in the project file.
-
