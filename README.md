@@ -20,6 +20,13 @@ npm i
 ```
 <h3 align="center">To help you understand the project</h3>
 
+## Folder Structure
+
+```bash
+├── src
+│   └── index.ts => `to run the server`
+└──
+```
 ## DataBase ERD
 
 <p align="center">
@@ -31,3 +38,40 @@ npm i
 ```
 node run start
 ```
+
+
+`Step 4` : Open the browser for admin control page and click : [http://localhost:8080](http://localhost:8080)
+
+`Step 5` : Open [postman](https://www.postman.com/downloads/) and import : [Database collation](https://github.com/MohamedAlabasy/Node.JS-Todo-List/blob/main/api_collection.json) You will find it in the project file.
+
+`Step 6` :  Download front-end React source code : 
+<h3 align="center">https://github.com/MohamedAlabasy/React-Todo-List</h3>
+<hr>
+
+To run eslint to check error
+
+```
+npm run lint
+```
+
+To run eslint and auto fixed error
+
+```
+npm run lint:f
+```
+
+To compile the TS code
+
+```
+npm run build
+```
+
+To run the JS code
+
+```
+node dist/index.js
+```
+<hr>
+
+Here are the [Command](https://github.com/MohamedAlabasy/Node.JS-Todo-List/blob/main/command.txt) that were used in the project, You will find it in the project file.
+
