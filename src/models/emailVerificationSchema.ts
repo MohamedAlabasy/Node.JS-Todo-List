@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
     code: { type: String, required: true, trim: true },
     created_at: { type: Date, required: true, default: Date.now },
     expire_at: { type: Date, required: true },
-    user: { type: Number, ref: 'users' }
+    user: { type: Number, ref: 'users', required: true }
 }, { timestamps: true });
 
 schema.plugin(AutoIncrementID, [{ filed: '_id' }]);

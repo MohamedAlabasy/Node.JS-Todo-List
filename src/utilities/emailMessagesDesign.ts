@@ -199,7 +199,7 @@ export default function EmailMessagesDesign(userName: string, code: number) {
                             <td bgcolor="#f4f4f4" align="left"
                                 style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;">
                                 <br>
-                                <p style="margin: 0;">If these emails get annoying, please feel free to <a href="Mohamed Alabasy"
+                                <p style="margin: 0;">If these emails get annoying, please feel free to <a href="https://www.linkedin.com/in/mohamed-alabasy/"
                                         target="_blank" style="color: #111111; font-weight: 700;"> connect with me on linkedin</a>.</p>
                             </td>
                         </tr>

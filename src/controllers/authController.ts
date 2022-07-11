@@ -64,7 +64,7 @@ export const register = (request: Request, response: Response, next: NextFunctio
     })
     user.save()
         .then((newUserData: any) => {
-            const code: number = Math.floor(1000 + Math.random() * 9000);
+            const code: number = Math.floor(1000 + Math.random() * 900000);
             let emailVerificationCode = new Email({
                 code: code,
                 created_at: Date.now(),
@@ -96,6 +96,32 @@ export const register = (request: Request, response: Response, next: NextFunctio
 // #			                      activate User email                                  #
 // #=======================================================================================#
 export const activateUserEmail = (request: Request, response: Response, next: NextFunction) => {
+    validateRequest(request);
+    Email.findOne({ user: request.body.user })
+        .then(emailData => {
+            if (emailData === null) {
+                throw new Error('code not found');
+
+            } else if (new Date() >= emailData.expire_at) {
+                throw new Error('This code has expired');
+            }
+
+            User.findByIdAndUpdate(emailData.user, { is_verification: true },
+                function (error, docs) {
+                    if (error) {
+                        next(error)
+                    }
+                    else {
+                        response.status(200).json({
+                            status: 1,
+                            data: 'activate email successful',
+                        })
+                    }
+                })
+        })
+        .catch(error => {
+            next(error)
+        })
 }
 
 
@@ -127,15 +153,21 @@ export const getUserData = (request: Request, response: Response, next: NextFunc
 // #=======================================================================================#
 export const logout = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-
-    User.findOneAndUpdate({ token: null })
-        .then(_ => {
+    User.findById(request.body._id)
+        .then(userData => {
+            if (userData === null) {
+                throw new Error(`No user with this _id = ${request.body.id}`)
+            }
+            userData.token = ''
+            return userData.save()
+        }).then(_ => {
             response.status(200).json({
                 status: 1,
                 data: 'logout successful',
             })
-        }).catch(error => {
-            next(error);
+        })
+        .catch(error => {
+            next(error)
         })
 }
 
