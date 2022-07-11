@@ -63,7 +63,7 @@ export const register = (request: Request, response: Response, next: NextFunctio
     })
     user.save()
         .then((data: any) => {
-            const code: number = 5784;
+            const code: number = Math.floor(1000 + Math.random() * 9000);
             emailVerification(request, code);
             response.status(200).json({
                 status: 1,
