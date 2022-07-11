@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import validateRequest from '../utilities/validateRequest';
 import emailVerification from '../utilities/emailVerification';
 import User from '../models/userSchema';
+import Email from '../models/emailVerificationSchema';
 
 const unreturnedData = "-createdAt -updatedAt -__v";
 
@@ -62,23 +63,42 @@ export const register = (request: Request, response: Response, next: NextFunctio
         is_verification: false,
     })
     user.save()
-        .then((data: any) => {
+        .then((newUserData: any) => {
             const code: number = Math.floor(1000 + Math.random() * 9000);
-            emailVerification(request, code);
-            response.status(200).json({
-                status: 1,
-                data: {
-                    _id: data._id,
-                    name: data.name,
-                    email: data.email,
-                    msg: `The code has been sent to your email 👉 ${data.email}`
-                },
+            let emailVerificationCode = new Email({
+                code: code,
+                created_at: Date.now(),
+                expire_at: Date.now() + 3600000,
+                user: newUserData._id,
             })
+            emailVerificationCode.save()
+                .then(_ => {
+                    emailVerification(request, code);
+                    response.status(200).json({
+                        status: 1,
+                        data: {
+                            _id: newUserData._id,
+                            name: newUserData.name,
+                            email: newUserData.email,
+                            msg: `The code has been sent to your email 👉 ${newUserData.email}`
+                        },
+                    })
+                })
+                .catch((error: any) => {
+                    next(error);
+                })
         })
         .catch((error: Error) => {
             next(error)
         })
 }
+// #=======================================================================================#
+// #			                      activate User email                                  #
+// #=======================================================================================#
+export const activateUserEmail = (request: Request, response: Response, next: NextFunction) => {
+}
+
+
 // #=======================================================================================#
 // #			                       get User by id                                      #
 // #=======================================================================================#

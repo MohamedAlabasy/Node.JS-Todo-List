@@ -10,7 +10,6 @@ const unreturnedData = "-createdAt -updatedAt -__v";
 // #=======================================================================================#
 export const createTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-
     let todoList = new TodoList({
         title: request.body.title,
         description: request.body.description,
