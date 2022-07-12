@@ -193,10 +193,10 @@ export const resetPassword = (request: Request, response: Response, next: NextFu
 // #=======================================================================================#
 export const getUserData = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
-    User.findById(request.body._id).select(unreturnedData)
+    User.findById(request.params._id).select(unreturnedData)
         .then((data) => {
             if (data === null) {
-                throw new Error(`No user with this id = ${request.body._id}`)
+                throw new Error(`No user with this id = ${request.params._id}`)
             } else {
                 response.status(200).json({
                     status: 1,
@@ -215,10 +215,10 @@ export const getUserData = (request: Request, response: Response, next: NextFunc
 // #=======================================================================================#
 export const logout = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-    User.findByIdAndUpdate(request.body._id, { token: null })
+    User.findByIdAndUpdate(request.params._id, { token: null })
         .then(userData => {
             if (userData === null) {
-                throw new Error(`No user with this _id = ${request.body._id}`)
+                throw new Error(`No user with this _id = ${request.params._id}`)
             }
             response.status(200).json({
                 status: 1,
@@ -236,10 +236,10 @@ export const logout = (request: Request, response: Response, next: NextFunction)
 // #=======================================================================================#
 export const deleteUser = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
-    User.findByIdAndDelete(request.body._id)
+    User.findByIdAndDelete(request.params._id)
         .then((data) => {
             if (data === null) {
-                throw new Error(`No user with this _id = ${request.body._id}`)
+                throw new Error(`No user with this _id = ${request.params._id}`)
             } else {
                 data.deleteOne()
                 response.status(200).json({

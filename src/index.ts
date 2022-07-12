@@ -2,9 +2,10 @@ import express from 'express';
 import 'dotenv/config'
 import body_parser from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 import morganMiddleware from './middleware/morganMiddleware';
-import headerAccessMiddleware from './middleware/headerAccessMiddleware';
+// import headerAccessMiddleware from './middleware/headerAccessMiddleware';
 import notFoundMiddleware from './middleware/notFoundMiddleware';
 import errorMiddleware from './middleware/errorMiddleware';
 
@@ -32,7 +33,8 @@ app.use(body_parser.urlencoded({ extended: false }));
 // #=======================================================================================#
 // #			                     add header or use cors                                #
 // #=======================================================================================#
-app.use(headerAccessMiddleware);
+// app.use(headerAccessMiddleware);
+app.use(cors());
 // #=======================================================================================#
 // #			                            router                                         #
 // #=======================================================================================#

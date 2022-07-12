@@ -9,7 +9,7 @@ import {
     checkUserEmailToRestPassword,
     resetPassword
 } from '../../controllers/authController';
-import { body, check } from 'express-validator';
+import { body, check, param } from 'express-validator';
 
 import User from '../../models/userSchema';
 import Email from '../../models/emailVerificationSchema';
@@ -18,13 +18,11 @@ import checkTokens from '../../utilities/checkTokens';
 
 const auth: Router = Router()
 
-auth.route('')
-    .get(checkTokens, checkID(), getUserData)
-    .delete(checkTokens, checkID(), deleteUser)
-
+auth.get('/:_id', checkTokens, checkID(), getUserData)
+auth.get('/logout/:_id', checkTokens, checkID(), logout);
+auth.delete('/:_id', checkTokens, checkID(), deleteUser)
 auth.post('/login', checkExistEmail(), login);
 auth.post('/register', checkExistEmail(), checkUserName(), checkUserPassword(), register);
-auth.post('/logout', checkTokens, checkID(), logout);
 auth.post('/activate', checkTokens, checkCode(), checkActivateUserEmail(), activateUserEmail);
 auth.post('/checkEmail', checkTokens, checkExistEmail(), checkUserEmailToRestPassword);
 auth.post('/resetPassword', checkTokens, checkCode(), checkUserPassword(), checkResetPasswordUserEmail(), resetPassword);
@@ -35,7 +33,7 @@ auth.post('/resetPassword', checkTokens, checkCode(), checkUserPassword(), check
 
 function checkID() {
     return [
-        body("_id").exists().withMessage('you must enter _id').isInt().withMessage('invalid Comment _id')
+        param("_id").exists().withMessage('you must enter _id').isInt().withMessage('invalid Comment _id')
     ]
 }
 

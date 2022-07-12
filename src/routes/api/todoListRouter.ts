@@ -25,11 +25,11 @@ todoList.route('')
     .put(checkTokens, checkTodoID(), checkUpdateTitle(), checkTodoData(), updateTodoList)
     .delete(checkTokens, checkTodoID(), deleteTodoList)
 
-todoList.post('/all', checkTokens, checkUserID(), getAllTodoLists);
-todoList.get('/inProgress', checkTokens, checkUserID(), getAllTodoInProgress);
-todoList.get('/underReview', checkTokens, checkUserID(), getAllTodoUnderReview);
-todoList.get('/rework', checkTokens, checkUserID(), getAllTodoRework);
-todoList.get('/completed', checkTokens, checkUserID(), getAllTodoCompleted);
+todoList.get('/all/:user', checkTokens, checkUserID(), getAllTodoLists);
+todoList.get('/inProgress/:user', checkTokens, checkUserID(), getAllTodoInProgress);
+todoList.get('/underReview/:user', checkTokens, checkUserID(), getAllTodoUnderReview);
+todoList.get('/rework/:user', checkTokens, checkUserID(), getAllTodoRework);
+todoList.get('/completed/:user', checkTokens, checkUserID(), getAllTodoCompleted);
 // #=======================================================================================#
 // #			                         check function                                    #
 // #=======================================================================================#

@@ -115,6 +115,9 @@ export const deleteTodoList = (request: Request, response: Response, next: NextF
 // #			                  get All data depend on status                            #
 // #=======================================================================================#
 export const getAllTodoLists = (request: Request, response: Response, next: NextFunction) => {
+    console.log(request.params);
+    console.log(request.params.user);
+
     getAll(request, response, next, '')
 }
 
@@ -139,7 +142,7 @@ export const getAllTodoCompleted = (request: Request, response: Response, next: 
 function getAll(request: Request, response: Response, next: NextFunction, status: string) {
     validateRequest(request)
 
-    TodoList.find(status ? { status, user: request.body.user } : { user: request.body.user }).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData}`)
+    TodoList.find(status ? { status, user: request.params.user } : { user: request.params.user }).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData}`)
         .then((data) => {
             if (data.length === 0) {
                 throw new Error(`No ${status} todo list to show`)
