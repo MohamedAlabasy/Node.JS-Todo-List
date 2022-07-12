@@ -139,7 +139,7 @@ export const getAllTodoCompleted = (request: Request, response: Response, next: 
 function getAll(request: Request, response: Response, next: NextFunction, status: string) {
     validateRequest(request)
 
-    TodoList.find(status ? { status } : {}).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData}`)
+    TodoList.find(status ? { status, user: request.body.user } : { user: request.body.user }).populate({ path: 'user', select: unreturnedData }).select(`${unreturnedData}`)
         .then((data) => {
             if (data.length === 0) {
                 throw new Error(`No ${status} todo list to show`)

@@ -25,11 +25,11 @@ todoList.route('')
     .put(checkTokens, checkTodoID(), checkUpdateTitle(), checkTodoData(), updateTodoList)
     .delete(checkTokens, checkTodoID(), deleteTodoList)
 
-todoList.get('/all', checkTokens, getAllTodoLists);
-todoList.get('/inProgress', checkTokens, getAllTodoInProgress);
-todoList.get('/underReview', checkTokens, getAllTodoUnderReview);
-todoList.get('/rework', checkTokens, getAllTodoRework);
-todoList.get('/completed', checkTokens, getAllTodoCompleted);
+todoList.post('/all', checkTokens, checkUserID(), getAllTodoLists);
+todoList.get('/inProgress', checkTokens, checkUserID(), getAllTodoInProgress);
+todoList.get('/underReview', checkTokens, checkUserID(), getAllTodoUnderReview);
+todoList.get('/rework', checkTokens, checkUserID(), getAllTodoRework);
+todoList.get('/completed', checkTokens, checkUserID(), getAllTodoCompleted);
 // #=======================================================================================#
 // #			                         check function                                    #
 // #=======================================================================================#
@@ -95,7 +95,7 @@ function checkTodoData() {
 function checkUserID() {
     return [
         check('user')
-            .exists().withMessage('you must enter exists')
+            .exists().withMessage('you must enter user')
             .isInt().withMessage('invalid user ID')
             .custom((userID) => {
                 return User.findById(userID)
