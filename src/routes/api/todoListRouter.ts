@@ -21,10 +21,10 @@ const todoList: Router = Router()
 
 todoList.route('')
     .post(checkTokens, checkExistTitle(), checkTodoData(), checkUserID(), createTodoList)
-    .get(checkTokens, checkTodoID(), getTodoListByID)
     .put(checkTokens, checkTodoID(), checkUpdateTitle(), checkTodoData(), updateTodoList)
-    .delete(checkTokens, checkTodoID(), deleteTodoList)
 
+todoList.get('/:_id', checkTokens, checkTodoID(), getTodoListByID)
+todoList.delete('/:_id', checkTokens, checkTodoID(), deleteTodoList);
 todoList.get('/all/:user', checkTokens, checkUserID(), getAllTodoLists);
 todoList.get('/inProgress/:user', checkTokens, checkUserID(), getAllTodoInProgress);
 todoList.get('/underReview/:user', checkTokens, checkUserID(), getAllTodoUnderReview);

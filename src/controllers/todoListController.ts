@@ -45,10 +45,10 @@ export const createTodoList = (request: Request, response: Response, next: NextF
 export const getTodoListByID = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request);
 
-    TodoList.findById(request.body._id).populate({ path: 'user', select: unreturnedData }).select(unreturnedData)
+    TodoList.findById(request.params._id).populate({ path: 'user', select: unreturnedData }).select(unreturnedData)
         .then(data => {
             if (data === null) {
-                throw new Error(`No todo with this _id = ${request.body._id}`)
+                throw new Error(`No todo with this _id = ${request.params._id}`)
             } else {
                 response.status(200).json({
                     status: 1,
@@ -96,10 +96,10 @@ export const updateTodoList = (request: Request, response: Response, next: NextF
 export const deleteTodoList = (request: Request, response: Response, next: NextFunction) => {
     validateRequest(request)
 
-    TodoList.findByIdAndDelete(request.body._id)
+    TodoList.findByIdAndDelete(request.params._id)
         .then((data) => {
             if (data == null) {
-                throw new Error(`No Todo with this id = ${request.body._id}`)
+                throw new Error(`No Todo with this id = ${request.params._id}`)
             } else {
                 response.status(200).json({
                     status: 1,
@@ -115,9 +115,6 @@ export const deleteTodoList = (request: Request, response: Response, next: NextF
 // #			                  get All data depend on status                            #
 // #=======================================================================================#
 export const getAllTodoLists = (request: Request, response: Response, next: NextFunction) => {
-    console.log(request.params);
-    console.log(request.params.user);
-
     getAll(request, response, next, '')
 }
 
