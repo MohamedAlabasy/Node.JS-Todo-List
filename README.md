@@ -80,7 +80,7 @@ npm i
 node run start
 ```
 
-`Step 4` : Open the browser for admin control page and click : [http://localhost:8080](http://localhost:8080)
+`Step 4` : Open the browser and click : [http://localhost:8080](http://localhost:8080)
 
 `Step 5` : Open [postman](https://www.postman.com/downloads/) and import : [API Collation](https://github.com/MohamedAlabasy/Node.JS-Todo-List/blob/main/api_collection.json) You will find it in the project file.
 
