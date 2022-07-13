@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body, check } from 'express-validator';
+import { body, check, param } from 'express-validator';
 
 import {
     createTodoList,
@@ -36,7 +36,7 @@ todoList.get('/completed/:user', checkTokens, checkUserID(), getAllTodoCompleted
 
 function checkTodoID() {
     return [
-        body("_id").exists().withMessage('you must enter _id').isInt().withMessage('invalid todo ID')
+        param("_id").exists().withMessage('you must enter _id').isInt().withMessage('invalid todo ID')
     ]
 }
 
