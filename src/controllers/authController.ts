@@ -41,6 +41,7 @@ export const login = (request: Request, response: Response, next: NextFunction) 
                                             id: data?._id,
                                             name: data?.name,
                                             email: data?.email,
+                                            is_verification: data?.is_verification,
                                         }
                                     })
                                 })
@@ -83,6 +84,7 @@ export const register = (request: Request, response: Response, next: NextFunctio
                             _id: newUserData._id,
                             name: newUserData.name,
                             email: newUserData.email,
+                            is_verification: newUserData.is_verification,
                             msg: `The code has been sent to your email 👉 ${newUserData.email}`
                         },
                     })
